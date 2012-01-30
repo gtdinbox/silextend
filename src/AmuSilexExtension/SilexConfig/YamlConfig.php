@@ -8,14 +8,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlConfig implements ServiceProviderInterface
 {
-    private $filename;
+    private $filenames;
 
     private $replacements = array();
 
-    public function __construct($filename, array $replacements = array())
+    public function __construct($filenames, array $replacements = array())
     {
-        $this->filename = $filename;
-
+		$this->filenames = is_array( $filenames ) ? $filenames : array($filenames);
+       
         if ($replacements) {
             foreach ($replacements as $key => $value) {
                 $this->replacements['%'.$key.'%'] = $value;
@@ -25,18 +25,22 @@ class YamlConfig implements ServiceProviderInterface
 
     public function register(Application $app)
     {
-        if (!file_exists($this->filename)) {
-            throw new \InvalidArgumentException(
-                sprintf("The config file '%s' does not exist.", $this->filename));
-        }
+		$config = array();
+		foreach ( $this->filenames as $filename )
+		{
+	        if (!file_exists($filename)) {
+	            throw new \InvalidArgumentException(sprintf("The config file '%s' does not exist.", $filename));
+	        }
+			
+			$parsed = Yaml::parse($filename);
+			
+	        if (null === $parsed) {
+	            throw new \InvalidArgumentException(sprintf("The config file '%s' appears to be invalid YAML.", $filename));
+	        }
 
-        $config = Yaml::parse($this->filename);
-
-        if (null === $config) {
-            throw new \InvalidArgumentException(
-                sprintf("The config file '%s' appears to be invalid YAML.", $this->filename));
-        }
-
+	        $config = array_merge($config, $parsed);
+		}
+		
 		$replacedConfig = array();
 
         foreach ($config as $name => $value) {
