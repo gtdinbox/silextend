@@ -1,6 +1,6 @@
 <?php
 
-namespace AmuSilexExtension\SilexConfig;
+namespace Silextend\Config;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
