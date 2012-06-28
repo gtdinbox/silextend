@@ -48,7 +48,12 @@ class YamlConfig implements ServiceProviderInterface
         }
 		$app['config'] = $replacedConfig;
     }
-
+	
+	public function boot(Application $app)
+	{
+		// nothing....
+	}
+	
     private function doReplacements($value)
     {
         if (!$this->replacements) {
@@ -82,5 +87,5 @@ class YamlConfig implements ServiceProviderInterface
 		}
 		return $merged;
 	}
-
+	
 }
