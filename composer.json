@@ -1,8 +1,8 @@
 {
-	"name": "silextend/silextend",
+	"name": "allmarkedup/silextend",
 	"type": "library",
 	"description": "Various extensions for Silex",
-	"homepage": "https://github.com/allmarkedup/silex-extensions",
+	"homepage": "https://github.com/allmarkedup/silextend",
 	"version": "1.0.0",
 	"license": "MIT",
 	"require": {
